@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 	private static final int friends_loading=3;
 	private static final int friend_IP=4;
 	private static final int add_friend=5;
+	private static final int chat_init=6;
 	private String req;
 	private String friendsId;
 	private String account;
@@ -48,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 	private String name;
 	private String Avatar;
 	private String ip;
+	
 	
        
     /**
@@ -101,6 +103,9 @@ public class LoginServlet extends HttpServlet {
         }
         if(Integer.parseInt(req)==add_friend) {
         	addFriend(request,response);
+        }
+        if(Integer.parseInt(req)==chat_init) {
+        	chatInit(request,response);
         }
         //AddFriendTable.closeStatement(AddFriendTable.statement);
         //DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
@@ -269,6 +274,43 @@ public class LoginServlet extends HttpServlet {
     	}else {
     		response.getWriter().append("x");
     	}
+	}
+	
+	private void chatInit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        friendsId=request.getParameter("FriendsId");
+        friendAccount=request.getParameter("FriendAccount");
+        System.out.println("chatInit id"+friendsId);
+        System.out.println("chatInit friendAccount"+friendAccount);
+        //response.getWriter().append("登录请求成功");//有了这句话，返回的就不是纯
+        //Json了！！！
+        //String[] Fields= {"fromAccount","toAccount"};
+        //String[] data= {account,password,name,Avatar,ip};
+        String[] TableFields= {"fromAccount","toAccount","message"};
+        ArrayList<String[]> arrayList=AddFriendTable.queryAll("message_table_"+friendsId, TableFields);
+    	//System.out.println(arrayList);
+    	if(arrayList!=null) {
+    		JSONArray jsonArray= new JSONArray();
+    		for(int i=0;i<arrayList.size();i++) {
+    			String fromAccount=arrayList.get(i)[0];
+    			String toAccount=arrayList.get(i)[1];
+    			String message=arrayList.get(i)[2];
+    			if(fromAccount.equals(this.friendAccount)||
+    					toAccount.equals(this.friendAccount)) {
+    				JSONObject jsonObject = new JSONObject();
+        			jsonObject.put("FromAccount", arrayList.get(i)[0]);
+        			jsonObject.put("ToAccount", arrayList.get(i)[1]);//返回的都是最后一个值的时候
+        			//string的特性！！！
+                	jsonObject.put("Message", arrayList.get(i)[2]);
+                	jsonArray.put(jsonObject);
+    			}
+    		}
+        	System.out.println(jsonArray.toString());
+        	response.getWriter().append(jsonArray.toString()); 			
+    	}else {
+    		response.getWriter().append("x");
+    	}
+    	//DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
+    	
 	}
 }
 

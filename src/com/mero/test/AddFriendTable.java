@@ -146,7 +146,57 @@ public class AddFriendTable {
             e.printStackTrace();
         }
         return null;  
-    }  
+    }
+	
+	public static  ArrayList<String[]> queryForChatInit(String TableName,String[] Fields,String[] data,String[] Table_Fields){  
+		ArrayList<String[]> arrayList=null;
+		String[] result = null;
+        boolean state=false;
+        try {  
+        	conn = DbDao.getConnection();// 首先要获取连接，即连接到数据库
+            String sql = "select * from "+TableName+" where ";  
+             int length = Fields.length;  
+             for(int i=0;i<length;i++){  
+                    sql+=Fields[i]+" = ? ";//由于有预处理，所有这里为？
+                    //防止最后一个,  
+                    if(i<length-1){  
+                        sql+=" and ";  
+                    }  
+             }  
+             sql+=";";  
+             System.out.println("查询sql:"+sql);  
+            //预处理SQL 防止注入  
+            excutePs(sql,length,data);  
+            //查询结果集  
+            ResultSet set=statement.executeQuery();  
+            //存放结果集  
+            
+            arrayList=new ArrayList<String[]>();
+            while(set.next()){//如果没查到的话，set.next()=false!!
+            	state=true;
+            	result = new String[Table_Fields.length];
+                    for (int i = 0; i < Table_Fields.length; i++) {  
+                        result[i] = set.getString(Table_Fields[i]);
+                    }
+                    arrayList.add(result);
+                }
+            //statement.close();
+           // DbDao.closeConnection(DbDao.conn);
+            //DbDao.conn=null;
+            //conn=null;
+            if(state) {
+            	return arrayList;
+            }else {
+            	return null;
+            }
+        } catch (SQLException e) {  
+             System.out.println("查询失败" + e.getMessage());  
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;  
+    }
 	
 	public static ArrayList<String[]> queryAll(String TableName,String[] Table_Fields){  
 		ArrayList<String[]> arrayList=null;
