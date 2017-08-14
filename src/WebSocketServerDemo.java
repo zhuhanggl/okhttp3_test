@@ -95,6 +95,11 @@ public class WebSocketServerDemo {
     	String friendSessionId = null;
     	//boolean userFinded=false;
     	//boolean friendFinded=false;
+    	String[] TableFields= {"fromAccount","toAccount","message"};
+    	String[] data= {from,to,msg};
+    	AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
+    	AddFriendTable.insert(TableFields,"message_table_"+toId, data);
+    	//无论找没找到用户，仍然需要在数据库中存储数据
         for(int i=0;i<userList.size();i++) {//需要考虑没找到的情况
         	/*if(userList.get(i).getAccount().equals(from)) {
         		userSessionId=userList.get(i).getSessionId();
@@ -103,10 +108,10 @@ public class WebSocketServerDemo {
         	if(userList.get(i).getAccount().equals(to)) {
         		friendSessionId=userList.get(i).getSessionId();
         		//friendFinded=true;
-        		String[] TableFields= {"fromAccount","toAccount","message"};
-            	String[] data= {from,to,msg};
-            	AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
-            	AddFriendTable.insert(TableFields,"message_table_"+toId, data);
+        		//String[] TableFields= {"fromAccount","toAccount","message"};
+            	//String[] data= {from,to,msg};
+            	//AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
+            	//AddFriendTable.insert(TableFields,"message_table_"+toId, data);
         		break;
         	}
         	/*if(userFinded&&friendFinded)

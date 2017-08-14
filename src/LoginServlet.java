@@ -108,7 +108,8 @@ public class LoginServlet extends HttpServlet {
         	chatInit(request,response);
         }
         //AddFriendTable.closeStatement(AddFriendTable.statement);
-        //DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
+        DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
+        DbDao.conn=null;
 	}
 	
 	
