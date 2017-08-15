@@ -121,8 +121,11 @@ public class WebSocketServerDemo {
         System.out.println("friendSessionId:"+friendSessionId);
         for(Session session : peers) {
         	if(session.getId().equals(friendSessionId)) {
-        		try {  
-                    session.getBasicRemote().sendText(msg);  
+        		try {
+        			JSONObject jsonObject=new JSONObject();
+        			jsonObject.put("FromAccount",from);
+        			jsonObject.put("Message", msg);
+                    session.getBasicRemote().sendText(jsonObject.toString());  
                 } catch (IOException e) {  
                     // TODO Auto-generated catch block  
                     e.printStackTrace();  

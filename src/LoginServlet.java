@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
 	private static final int friend_IP=4;
 	private static final int add_friend=5;
 	private static final int chat_init=6;
+	private static final int friend_data=7;
 	private String req;
 	private String friendsId;
 	private String account;
@@ -49,6 +50,7 @@ public class LoginServlet extends HttpServlet {
 	private String name;
 	private String Avatar;
 	private String ip;
+	private String userId;
 	
 	
        
@@ -106,6 +108,9 @@ public class LoginServlet extends HttpServlet {
         }
         if(Integer.parseInt(req)==chat_init) {
         	chatInit(request,response);
+        }
+        if(Integer.parseInt(req)==friend_data) {
+        	friendData(request,response);
         }
         //AddFriendTable.closeStatement(AddFriendTable.statement);
         DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
@@ -313,6 +318,32 @@ public class LoginServlet extends HttpServlet {
     	//DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
     	
 	}
+    private void friendData(HttpServletRequest request, 
+    		HttpServletResponse response) throws ServletException, IOException{
+		userId=request.getParameter("UserId");
+        friendAccount=request.getParameter("FriendAccount");
+        String[] Fields= {"account"};
+        String[] TableFields= {"friendId","account","name","Avatar"};
+    	String[] data= {friendAccount};
+    	String[] result=AddFriendTable.query
+    			("friend_table_"+userId, Fields, data, TableFields);
+    	if(result!=null) {//改完程序后不需要重新按启动服务器按钮，编译都是动态的！！！！
+        	JSONObject jsonObject=new JSONObject();
+        	jsonObject.put("FriendId",result[0]);
+        	jsonObject.put("Account",result[1]);
+        	jsonObject.put("Name",result[2]);
+        	jsonObject.put("Avatar",result[3]);
+        	System.out.println(jsonObject.toString());
+        	response.getWriter().append(jsonObject.toString());
+        	//DbDao.closeConnection(DbDao.conn);//在这里使用静态方法close connection
+        	//之前出现的object错误与statement有关
+    	}else {
+    		response.getWriter().append("x");
+    	}
+    	
+	}
+	
+	
 }
 
 
