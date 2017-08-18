@@ -1,8 +1,10 @@
 
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collection;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
 //import java.sql.Statement;
@@ -16,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.mero.test.DbDao;
 import com.mero.test.AddFriendTable;
@@ -30,6 +33,7 @@ import net.sf.json.xml.*;
 /**
  * Servlet implementation class LoginServlet
  */
+//注意@MultipartConfig要放在最后面！！！！没有@MultipartConfig，则getPart为null！！！1
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -81,11 +85,12 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		System.out.println("Post请求成功");
 		response.setContentType("text/html;charset=utf-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-
-        System.out.println("Post请求成功");
+        
         req=request.getParameter("Req");
         
         if(Integer.parseInt(req)==login) {
@@ -291,7 +296,7 @@ public class LoginServlet extends HttpServlet {
         //Json了！！！
         //String[] Fields= {"fromAccount","toAccount"};
         //String[] data= {account,password,name,Avatar,ip};
-        String[] TableFields= {"fromAccount","toAccount","message"};
+        String[] TableFields= {"fromAccount","toAccount","message","imagePath"};
         ArrayList<String[]> arrayList=AddFriendTable.queryAll("message_table_"+friendsId, TableFields);
     	//System.out.println(arrayList);
     	if(arrayList!=null) {
@@ -300,13 +305,21 @@ public class LoginServlet extends HttpServlet {
     			String fromAccount=arrayList.get(i)[0];
     			String toAccount=arrayList.get(i)[1];
     			String message=arrayList.get(i)[2];
+    			String imagePath=arrayList.get(i)[3];
     			if(fromAccount.equals(this.friendAccount)||
     					toAccount.equals(this.friendAccount)) {
     				JSONObject jsonObject = new JSONObject();
-        			jsonObject.put("FromAccount", arrayList.get(i)[0]);
-        			jsonObject.put("ToAccount", arrayList.get(i)[1]);//返回的都是最后一个值的时候
+        			jsonObject.put("FromAccount", fromAccount);
+        			jsonObject.put("ToAccount", toAccount);//返回的都是最后一个值的时候
         			//string的特性！！！
-                	jsonObject.put("Message", arrayList.get(i)[2]);
+        			if(imagePath==null) {
+        				jsonObject.put("Message", message);
+        				jsonObject.put("ImagePath", "");
+        			}else {
+        				jsonObject.put("Message", "");
+                    	jsonObject.put("ImagePath", imagePath);
+        			}
+                	
                 	jsonArray.put(jsonObject);
     			}
     		}
@@ -342,6 +355,8 @@ public class LoginServlet extends HttpServlet {
     	}
     	
 	}
+    
+    
 	
 	
 }

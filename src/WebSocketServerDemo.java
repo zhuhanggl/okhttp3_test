@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Set;
@@ -62,8 +63,14 @@ public class WebSocketServerDemo {
         System.out.println("WebSocketServerDemo inmessage from sessionId:"+this.session.getId()+  
                     ":"+message);
         JSONObject jsonObject=new JSONObject(message);
-        sendMessage(jsonObject.getString("From"),jsonObject.getString("To")
-        		,jsonObject.getString("ToId"),jsonObject.getString("Message"));      
+        if(jsonObject.getString("Type").equals("message")) {
+        	sendMessage(jsonObject.getString("From"),jsonObject.getString("To")
+            		,jsonObject.getString("ToId"),jsonObject.getString("Message"));
+        }else if(jsonObject.getString("Type").equals("imagePath")) {
+        	sendImagePath(jsonObject.getString("From"),jsonObject.getString("To")
+            		,jsonObject.getString("ToId"),jsonObject.getString("ImagePath"));
+        }
+              
     }  
       
 //  客户端断开时触发  
@@ -123,6 +130,7 @@ public class WebSocketServerDemo {
         	if(session.getId().equals(friendSessionId)) {
         		try {
         			JSONObject jsonObject=new JSONObject();
+        			jsonObject.put("Type","message");
         			jsonObject.put("FromAccount",from);
         			jsonObject.put("Message", msg);
                     session.getBasicRemote().sendText(jsonObject.toString());  
@@ -133,7 +141,47 @@ public class WebSocketServerDemo {
         		break;
         	}
         }
-        
-        
+    }
+    
+    private void sendImagePath(String from,String to,String toId,String imagePath){
+    	//采用JSON
+    	String imagePath1=null;
+    	
+    	try {
+    		imagePath1="http://"+InetAddress.getLocalHost().getHostAddress()
+    				+":8000/hang/upload"+imagePath;
+    	}catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    	System.out.println(imagePath1);
+    	System.out.println("sendImagePath!!!!");
+    	String friendSessionId = null;
+    	String[] TableFields= {"fromAccount","toAccount","imagePath"};
+    	String[] data= {from,to,imagePath1};
+    	AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
+    	AddFriendTable.insert(TableFields,"message_table_"+toId, data);
+    	//无论找没找到用户，仍然需要在数据库中存储数据
+        for(int i=0;i<userList.size();i++) {//需要考虑没找到的情况
+        	if(userList.get(i).getAccount().equals(to)) {
+        		friendSessionId=userList.get(i).getSessionId();
+        		break;
+        	}
+        }
+        System.out.println("friendSessionId:"+friendSessionId);
+        for(Session session : peers) {
+        	if(session.getId().equals(friendSessionId)) {
+        		try {
+        			JSONObject jsonObject=new JSONObject();
+        			jsonObject.put("Type", "imagePath");
+        			jsonObject.put("FromAccount",from);
+        			jsonObject.put("ImagePath", imagePath1);
+                    session.getBasicRemote().sendText(jsonObject.toString());  
+                } catch (IOException e) {  
+                    // TODO Auto-generated catch block  
+                    e.printStackTrace();  
+                }
+        		break;
+        	}
+        }
     }
 }
