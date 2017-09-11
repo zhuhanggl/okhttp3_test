@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -316,8 +317,16 @@ public class LoginServlet extends HttpServlet {
         				jsonObject.put("Message", message);
         				jsonObject.put("ImagePath", "");
         			}else {
+        				String imagePath1=null;
+        				try {
+        		    		imagePath1="http://"+InetAddress.getLocalHost().getHostAddress()
+        		    				+":8000/hang/upload"+imagePath;
+        		    	}catch(IOException e) {
+        		    		e.printStackTrace();
+        		    	}
+        				System.out.println(imagePath1);
         				jsonObject.put("Message", "");
-                    	jsonObject.put("ImagePath", imagePath);
+                    	jsonObject.put("ImagePath", imagePath1);
         			}
                 	
                 	jsonArray.put(jsonObject);

@@ -145,6 +145,7 @@ public class WebSocketServerDemo {
     
     private void sendImagePath(String from,String to,String toId,String imagePath){
     	//采用JSON
+    	System.out.println("sendImagePath");
     	String imagePath1=null;
     	
     	try {
@@ -157,7 +158,7 @@ public class WebSocketServerDemo {
     	System.out.println("sendImagePath!!!!");
     	String friendSessionId = null;
     	String[] TableFields= {"fromAccount","toAccount","imagePath"};
-    	String[] data= {from,to,imagePath1};
+    	String[] data= {from,to,imagePath};
     	AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
     	AddFriendTable.insert(TableFields,"message_table_"+toId, data);
     	//无论找没找到用户，仍然需要在数据库中存储数据
