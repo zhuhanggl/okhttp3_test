@@ -26,9 +26,11 @@ public class DbDao {
             }
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
+        	System.out.println("(ClassNotFoundException e) ");
             e.printStackTrace();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
+        	System.out.println("(SQLException e) ");
             e.printStackTrace();
         }
         return conn;

@@ -10,11 +10,11 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/commons-beanutils-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/ezmorph-1.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/eclipse-workspace/okhttp3_test/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/ezmorph-1.0.2.jar"/>
+	<classpathentry kind="lib" path="D:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
