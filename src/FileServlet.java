@@ -55,6 +55,13 @@ public class FileServlet extends HttpServlet {
         			+ "Apache24/htdocs/hang/upload";
             part.write(savePath + File.separator + fileName);//目测这句话是
             //耗时的，这是真正意义上的上传
+            
+            /*String imageWidth = request.getParameter("imageWidth");
+            String imageHeight = request.getParameter("imageHeight");
+            System.out.println(imageWidth);
+            System.out.println(imageHeight);*/
+            
+            
         	System.out.println("part上传成功后");
         	response.getWriter().append("q");
         }

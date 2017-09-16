@@ -63,12 +63,19 @@ public class WebSocketServerDemo {
         System.out.println("WebSocketServerDemo inmessage from sessionId:"+this.session.getId()+  
                     ":"+message);
         JSONObject jsonObject=new JSONObject(message);
+        
         if(jsonObject.getString("Type").equals("message")) {
-        	sendMessage(jsonObject.getString("From"),jsonObject.getString("To")
-            		,jsonObject.getString("ToId"),jsonObject.getString("Message"));
+        	sendMessage(jsonObject.getString("From")
+        			,jsonObject.getString("To")
+            		,jsonObject.getString("ToId")
+            		,jsonObject.getString("Message"));
         }else if(jsonObject.getString("Type").equals("imagePath")) {
-        	sendImagePath(jsonObject.getString("From"),jsonObject.getString("To")
-            		,jsonObject.getString("ToId"),jsonObject.getString("ImagePath"));
+        	sendImagePath(jsonObject.getString("From")
+        			,jsonObject.getString("To")
+            		,jsonObject.getString("ToId")
+            		,jsonObject.getString("imageWidth")
+            		,jsonObject.getString("imageHeight")
+            		,jsonObject.getString("ImagePath"));
         }
               
     }  
@@ -143,7 +150,8 @@ public class WebSocketServerDemo {
         }
     }
     
-    private void sendImagePath(String from,String to,String toId,String imagePath){
+    private void sendImagePath(String from,String to,String toId,String imageWidth,
+    		String imageHeight,String imagePath){
     	//采用JSON
     	System.out.println("sendImagePath");
     	String imagePath1=null;
@@ -157,8 +165,9 @@ public class WebSocketServerDemo {
     	System.out.println(imagePath1);
     	System.out.println("sendImagePath!!!!");
     	String friendSessionId = null;
-    	String[] TableFields= {"fromAccount","toAccount","imagePath"};
-    	String[] data= {from,to,imagePath};
+    	String[] TableFields= {"fromAccount","toAccount","imagePath","imageWidth"
+    			,"imageHeight"};
+    	String[] data= {from,to,imagePath,imageWidth,imageHeight};
     	AddFriendTable.insert(TableFields,"message_table_"+oneUser.getId(), data);
     	AddFriendTable.insert(TableFields,"message_table_"+toId, data);
     	//无论找没找到用户，仍然需要在数据库中存储数据
@@ -176,6 +185,8 @@ public class WebSocketServerDemo {
         			jsonObject.put("Type", "imagePath");
         			jsonObject.put("FromAccount",from);
         			jsonObject.put("ImagePath", imagePath1);
+        			jsonObject.put("ImageWidth", imageWidth);
+        			jsonObject.put("ImageHeight", imageHeight);
                     session.getBasicRemote().sendText(jsonObject.toString());  
                 } catch (IOException e) {  
                     // TODO Auto-generated catch block  

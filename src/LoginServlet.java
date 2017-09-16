@@ -192,7 +192,8 @@ public class LoginServlet extends HttpServlet {
         		String[] FriendsTableFields= {"friendId","account","name","Avatar","ip"};
         		String FriendsTableName="friend_table_"+Integer.toString(id);
         	    AddFriendTable.createTable(FriendsTableFields, FriendsTableName);
-        	    String[] MessageTableFields= {"fromAccount","toAccount","message"};
+        	    String[] MessageTableFields= {"fromAccount","toAccount","message",
+        	    		"imagePath","imageWidth","imageHeight"};
         	    //数据库中不能用from和to作为键名！！！
         	    String MessageTableName="message_table_"+Integer.toString(id);
         	    AddFriendTable.createTable(MessageTableFields, MessageTableName);   
@@ -297,7 +298,7 @@ public class LoginServlet extends HttpServlet {
         //Json了！！！
         //String[] Fields= {"fromAccount","toAccount"};
         //String[] data= {account,password,name,Avatar,ip};
-        String[] TableFields= {"fromAccount","toAccount","message","imagePath"};
+        String[] TableFields= {"fromAccount","toAccount","message","imagePath","imageWidth","imageHeight"};
         ArrayList<String[]> arrayList=AddFriendTable.queryAll("message_table_"+friendsId, TableFields);
     	//System.out.println(arrayList);
     	if(arrayList!=null) {
@@ -307,6 +308,8 @@ public class LoginServlet extends HttpServlet {
     			String toAccount=arrayList.get(i)[1];
     			String message=arrayList.get(i)[2];
     			String imagePath=arrayList.get(i)[3];
+    			String imageWidth=arrayList.get(i)[4];
+    			String imageHeight=arrayList.get(i)[5];
     			if(fromAccount.equals(this.friendAccount)||
     					toAccount.equals(this.friendAccount)) {
     				JSONObject jsonObject = new JSONObject();
@@ -327,6 +330,8 @@ public class LoginServlet extends HttpServlet {
         				System.out.println(imagePath1);
         				jsonObject.put("Message", "");
                     	jsonObject.put("ImagePath", imagePath1);
+                    	jsonObject.put("ImageWidth", imageWidth);
+                    	jsonObject.put("ImageHeight", imageHeight);
         			}
                 	
                 	jsonArray.put(jsonObject);
