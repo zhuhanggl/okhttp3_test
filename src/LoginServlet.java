@@ -186,14 +186,18 @@ public class LoginServlet extends HttpServlet {
     		response.getWriter().append("a");
         	String[] TableFields= {"account","password","name","Avatar","ip"};
         	String[] data= {account,password,name,Avatar,ip};
-        	AddFriendTable.insert(TableFields,"users", data);
+        	AddFriendTable.insert(TableFields,"users", data);//users是数据库中的一个表！！！！！
         	int id=AddFriendTable.userIdQuery(account);
         	if(id!=0) {
         		String[] FriendsTableFields= {"friendId","account","name","Avatar","ip"};
         		String FriendsTableName="friend_table_"+Integer.toString(id);
         	    AddFriendTable.createTable(FriendsTableFields, FriendsTableName);
+<<<<<<< HEAD
         	    String[] MessageTableFields= {"fromAccount","toAccount","message",
         	    		"imagePath","imageWidth","imageHeight"};
+=======
+        	    String[] MessageTableFields= {"fromAccount","toAccount","message","imagePath"};
+>>>>>>> 1c0d1c0025acc3412331c2fa23bf76390133ec4b
         	    //数据库中不能用from和to作为键名！！！
         	    String MessageTableName="message_table_"+Integer.toString(id);
         	    AddFriendTable.createTable(MessageTableFields, MessageTableName);   
