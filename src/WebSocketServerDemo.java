@@ -187,6 +187,10 @@ public class WebSocketServerDemo {
         			jsonObject.put("ImagePath", imagePath1);
         			jsonObject.put("ImageWidth", imageWidth);
         			jsonObject.put("ImageHeight", imageHeight);
+        			
+        			
+        			
+        			
                     session.getBasicRemote().sendText(jsonObject.toString());  
                 } catch (IOException e) {  
                     // TODO Auto-generated catch block  
